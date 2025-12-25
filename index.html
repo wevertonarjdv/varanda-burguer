@@ -543,10 +543,10 @@
      background: var(--success);
    }
    
-   /* Footer - ATUALIZADO: 2025 dourado, resto branco */
+   /* Footer - ATUALIZADO: Cliente VarandaBurguer em destaque */
    .footer-simple {
      background: rgba(0, 0, 0, 0.3);
-     padding: 25px 20px;
+     padding: 20px;
      text-align: center;
      border-top: 1px solid rgba(255, 255, 255, 0.1);
    }
@@ -556,7 +556,7 @@
      margin: 0 auto;
      display: flex;
      flex-direction: column;
-     gap: 12px;
+     gap: 10px;
    }
    
    .powered-by {
@@ -571,7 +571,7 @@
      color: white;
      text-decoration: none;
      font-weight: 800;
-     font-size: 32px;
+     font-size: 26px;
      display: inline-flex;
      align-items: center;
      gap: 5px;
@@ -585,43 +585,32 @@
      transform: translateY(-3px);
    }
    
-   .wevex-w {
+   .wevex-text {
      font-family: 'Montserrat', sans-serif;
      font-weight: 900;
-     font-size: 40px;
-     background: linear-gradient(135deg, #3B82F6, #7C3AED);
+     font-size: 28px;
+     background: linear-gradient(135deg, #3B82F6, #7C3AED, #EF4444);
      -webkit-background-clip: text;
      -webkit-text-fill-color: transparent;
      display: inline-block;
-     animation: wevexFade 2s ease-in-out infinite;
      text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+     letter-spacing: 1px;
+     animation: wevexGlow 3s ease-in-out infinite;
    }
    
-   .wevex-x {
-     font-family: 'Montserrat', sans-serif;
-     font-weight: 900;
-     font-size: 40px;
-     background: linear-gradient(135deg, #7C3AED, #3B82F6);
-     -webkit-background-clip: text;
-     -webkit-text-fill-color: transparent;
-     display: inline-block;
-     animation: wevexFade 2s ease-in-out infinite 0.5s;
-     text-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
-   }
-   
+   /* ATUALIZADO: Cliente em destaque */
    .footer-copyright {
      font-size: 12px;
-     color: white;
+     color: rgba(255, 255, 255, 0.8);
      font-weight: 600;
      margin-top: 15px;
      letter-spacing: 0.5px;
    }
    
-   /* ATUALIZADO: Apenas o 2025 dourado */
-   .footer-copyright span.year-2025 {
+   .footer-copyright span.client-name {
      color: #FFD700;
-     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
      font-weight: 800;
+     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
    }
    
    /* Cart Floating Button */
@@ -1622,17 +1611,18 @@
      50% { opacity: 0.7; }
    }
    
-   @keyframes wevexFade {
+   @keyframes wevexGlow {
      0%, 100% { 
        opacity: 1;
        text-shadow: 0 0 15px rgba(59, 130, 246, 0.3),
-                    0 0 30px rgba(124, 58, 237, 0.2);
+                    0 0 30px rgba(124, 58, 237, 0.2),
+                    0 0 45px rgba(239, 68, 68, 0.1);
      }
      50% { 
-       opacity: 0.8;
+       opacity: 0.9;
        text-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
                     0 0 40px rgba(124, 58, 237, 0.3),
-                    0 0 60px rgba(124, 58, 237, 0.2);
+                    0 0 60px rgba(239, 68, 68, 0.2);
      }
    }
    
@@ -1763,13 +1753,13 @@
        font-size: 20px;
      }
      
+     /* WEVEX responsive */
      .wevex-link {
-       font-size: 28px;
+       font-size: 24px;
      }
      
-     .wevex-w,
-     .wevex-x {
-       font-size: 32px;
+     .wevex-text {
+       font-size: 26px;
      }
    }
    
@@ -1815,12 +1805,11 @@
      }
      
      .wevex-link {
-       font-size: 26px;
+       font-size: 22px;
      }
      
-     .wevex-w,
-     .wevex-x {
-       font-size: 30px;
+     .wevex-text {
+       font-size: 24px;
      }
    }
    
@@ -1865,12 +1854,11 @@
      }
      
      .wevex-link {
-       font-size: 24px;
+       font-size: 20px;
      }
      
-     .wevex-w,
-     .wevex-x {
-       font-size: 28px;
+     .wevex-text {
+       font-size: 22px;
      }
    }
    
@@ -1900,12 +1888,11 @@
      }
      
      .wevex-link {
-       font-size: 22px;
+       font-size: 18px;
      }
      
-     .wevex-w,
-     .wevex-x {
-       font-size: 26px;
+     .wevex-text {
+       font-size: 20px;
      }
    }
    
@@ -2035,19 +2022,18 @@
    </div>
  </main>
 
- <!-- Footer Simple - ATUALIZADO: 2025 dourado, resto branco -->
+ <!-- Footer Simple - ATUALIZADO: Cliente VarandaBurguer em destaque -->
  <footer class="footer-simple">
    <div class="footer-simple-content">
      <div class="powered-by">
-       Powered by
+       Desenvolvido por
      </div>
-     <a href="https://www.instagram.com/wevex.app?igsh=MXJjdW95am00d205eQ%3D%3D&utm_source=qr" target="_blank" class="wevex-link">
-       <span class="wevex-w">W</span>
-       <span class="wevex-x">X</span>
+     <a href="https://wevex.com.br" target="_blank" class="wevex-link">
+       <span class="wevex-text">WEVEX</span>
        <i class="fas fa-external-link-alt" style="font-size: 14px; margin-left: 8px; opacity: 0.7;"></i>
      </a>
      <div class="footer-copyright">
-       © <span class="year-2025">2025</span> Wevex. Todos os direitos reservados.
+       © <span class="client-name">VARANDA BURGUER</span> - Todos os direitos reservados.
      </div>
    </div>
  </footer>
@@ -2457,7 +2443,7 @@
  // State management
  const defaultState = {
    settings: {
-     name: 'VARANDA BURGUER',
+     name: 'VARANDA BURGUER', // CORRIGIDO: BURGER → BURGUER
      tagline: 'PREMIUM • GOURMET • ARTESANAL',
      logo: '',
      whatsapp: '34998702723',
@@ -2476,7 +2462,7 @@
    products: [
      {
        id: '1',
-       name: 'X-BURGER IMPERIAL',
+       name: 'X-BURGUER IMPERIAL', // CORRIGIDO: BURGER → BURGUER
        description: 'Pão brioche, hambúrguer 200g Angus, queijo cheddar, bacon crocante, alface, tomate, cebola caramelizada, molho especial da casa',
        price: 34.90,
        category: 'Hambúrguer Padrão',
@@ -3454,7 +3440,7 @@
    }
    
    message += `\n*Pedido gerado em:* ${new Date().toLocaleString('pt-BR')}\n`;
-   message += `\n*Pedido realizado via Site Varanda Burger*`;
+   message += `\n*Pedido realizado via Site Varanda Burguer*`;
    
    const phoneNumber = state.settings.whatsapp.replace(/\D/g, '');
    const encodedMessage = encodeURIComponent(message);
