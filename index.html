@@ -2255,7 +2255,7 @@
          <div class="payment-option selected" data-method="pix">
            <i class="fas fa-qrcode payment-icon"></i>
            <div class="payment-name">PIX</div>
-           <div class="payment-desc">À VISTA 10% OFF</div>
+           <div class="payment-desc">PAGAMENTO DIGITAL</div>
          </div>
          
          <div class="payment-option" data-method="dinheiro">
@@ -3624,12 +3624,11 @@
    
    message += `\n*VALOR TOTAL:* ${formatCurrency(total)}\n`;
    
-   // SEÇÃO DE PAGAMENTO - NOVA
+   // SEÇÃO DE PAGAMENTO - ATUALIZADA (sem desconto no PIX)
    message += `\n*FORMA DE PAGAMENTO:* `;
    
    if (paymentMethod === 'pix') {
-     message += `PIX (10% de desconto à vista)\n`;
-     message += `*Valor com desconto:* ${formatCurrency(total * 0.9)}\n`;
+     message += `PIX\n`;
    } 
    else if (paymentMethod === 'dinheiro') {
      message += `DINHEIRO\n`;
