@@ -557,6 +557,82 @@
      background: var(--success);
    }
    
+   /* Payment Section - NOVO */
+   .payment-section {
+     padding: 20px;
+     background: rgba(255, 255, 255, 0.05);
+     border-radius: var(--radius);
+     margin-bottom: 20px;
+   }
+   
+   .payment-options {
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+     gap: 10px;
+     margin-top: 10px;
+   }
+   
+   .payment-option {
+     background: rgba(255, 255, 255, 0.05);
+     border: 2px solid rgba(255, 255, 255, 0.1);
+     border-radius: var(--radius-sm);
+     padding: 12px 8px;
+     cursor: pointer;
+     transition: var(--transition);
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 6px;
+   }
+   
+   .payment-option:hover {
+     background: rgba(255, 255, 255, 0.1);
+   }
+   
+   .payment-option.selected {
+     background: rgba(255, 107, 53, 0.1);
+     border-color: var(--primary);
+   }
+   
+   .payment-icon {
+     font-size: 20px;
+     color: var(--accent);
+   }
+   
+   .payment-name {
+     font-weight: 600;
+     font-size: 12px;
+     text-align: center;
+     line-height: 1.2;
+   }
+   
+   .payment-desc {
+     font-size: 10px;
+     opacity: 0.7;
+     text-align: center;
+     line-height: 1.2;
+   }
+   
+   .change-option-btn {
+     background: rgba(255, 255, 255, 0.05);
+     border: 1px dashed rgba(255, 255, 255, 0.3);
+     border-radius: var(--radius-sm);
+     padding: 8px;
+     color: white;
+     font-size: 11px;
+     cursor: pointer;
+     transition: var(--transition);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 5px;
+     margin-top: 8px;
+   }
+   
+   .change-option-btn:hover {
+     background: rgba(255, 255, 255, 0.1);
+   }
+   
    /* Footer - ATUALIZADO: 2025 antes do VarandaBurguer */
    .footer-simple {
      background: rgba(0, 0, 0, 0.3);
@@ -1704,6 +1780,10 @@
        grid-template-columns: 1fr;
      }
      
+     .payment-options {
+       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+     }
+     
      .action-buttons {
        flex-direction: column;
      }
@@ -1809,6 +1889,10 @@
      
      .category-name {
        font-size: 11px;
+     }
+     
+     .payment-options {
+       grid-template-columns: 1fr 1fr;
      }
      
      .promo-image {
@@ -1981,8 +2065,6 @@
    <div class="footer-simple-content">
      <div class="powered-by">
        Desenvolvido por 
-
-      
      </div>
      <a href="https://wevex.com.br" target="_blank" class="wevex-link">
        <span class="wevex-text">WEVEX</span>
@@ -2160,6 +2242,46 @@
          <label class="form-label">OBSERVAÇÕES DO PEDIDO</label>
          <textarea class="form-input form-textarea" id="orderNotes" placeholder="Alguma observação especial sobre o pedido?"></textarea>
        </div>
+     </div>
+     
+     <!-- Payment Section - NOVO -->
+     <div class="payment-section">
+       <div class="section-title-small">
+         <i class="fas fa-credit-card"></i>
+         FORMA DE PAGAMENTO
+       </div>
+       
+       <div class="payment-options" id="paymentOptions">
+         <div class="payment-option selected" data-method="pix">
+           <i class="fas fa-qrcode payment-icon"></i>
+           <div class="payment-name">PIX</div>
+           <div class="payment-desc">À VISTA 10% OFF</div>
+         </div>
+         
+         <div class="payment-option" data-method="dinheiro">
+           <i class="fas fa-money-bill-wave payment-icon"></i>
+           <div class="payment-name">DINHEIRO</div>
+           <div class="payment-desc">TROCO PARA</div>
+         </div>
+         
+         <div class="payment-option" data-method="cartao">
+           <i class="fas fa-credit-card payment-icon"></i>
+           <div class="payment-name">CARTÃO</div>
+           <div class="payment-desc">DÉBITO/CRÉDITO</div>
+         </div>
+       </div>
+       
+       <!-- Campo de troco para dinheiro (aparece apenas quando selecionado) -->
+       <div class="form-group full-width" id="trocoContainer" style="display: none; margin-top: 12px;">
+         <label class="form-label">TROCO PARA QUANTO?</label>
+         <input type="text" class="form-input" id="trocoPara" placeholder="Ex: 50,00">
+       </div>
+       
+       <!-- Botão para personalizar mensagem -->
+       <button class="change-option-btn" id="customPaymentBtn">
+         <i class="fas fa-edit"></i>
+         PERSONALIZAR FORMA DE PAGAMENTO
+       </button>
      </div>
      
      <!-- Cart Summary -->
@@ -2549,6 +2671,11 @@
  let selectedAddons = new Set();
  let adminLoggedIn = false;
 
+ // Variáveis de pagamento
+ let paymentMethod = 'pix';
+ let customPaymentText = '';
+ let trocoPara = '';
+
  // Utility functions
  function formatCurrency(value) {
    return new Intl.NumberFormat('pt-BR', {
@@ -2655,7 +2782,12 @@
    cancelCustomize: document.getElementById('cancelCustomize'),
    addWithoutCustomize: document.getElementById('addWithoutCustomize'),
    addWithCustomize: document.getElementById('addWithCustomize'),
-   adminBackBtn: document.getElementById('adminBackBtn')
+   adminBackBtn: document.getElementById('adminBackBtn'),
+   // Elementos de pagamento - NOVOS
+   paymentOptions: document.getElementById('paymentOptions'),
+   trocoContainer: document.getElementById('trocoContainer'),
+   trocoPara: document.getElementById('trocoPara'),
+   customPaymentBtn: document.getElementById('customPaymentBtn')
  };
 
  // Initialize
@@ -2922,6 +3054,42 @@
    elements.cancelCustomize.addEventListener('click', closeCustomizeModal);
    elements.addWithoutCustomize.addEventListener('click', addProductWithoutCustomize);
    elements.addWithCustomize.addEventListener('click', addProductWithCustomize);
+   
+   // Event listeners para formas de pagamento - NOVOS
+   elements.paymentOptions.addEventListener('click', (e) => {
+     const paymentOption = e.target.closest('.payment-option');
+     if (paymentOption) {
+       document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+       paymentOption.classList.add('selected');
+       paymentMethod = paymentOption.getAttribute('data-method');
+       
+       // Mostra/esconde campo de troco
+       if (paymentMethod === 'dinheiro') {
+         elements.trocoContainer.style.display = 'block';
+       } else {
+         elements.trocoContainer.style.display = 'none';
+       }
+       
+       // Limpa texto personalizado se mudar para uma opção padrão
+       if (paymentMethod !== 'custom') {
+         customPaymentText = '';
+       }
+     }
+   });
+   
+   elements.trocoPara.addEventListener('input', (e) => {
+     trocoPara = e.target.value.trim();
+   });
+   
+   elements.customPaymentBtn.addEventListener('click', () => {
+     const customText = prompt('Digite a forma de pagamento personalizada (ex: "PIX com 10% desconto", "Cartão de crédito em 3x"):');
+     if (customText) {
+       customPaymentText = customText;
+       paymentMethod = 'custom';
+       document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+       showToast('Forma de pagamento personalizada definida!', 'success');
+     }
+   });
    
    document.addEventListener('keydown', (e) => {
      if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
@@ -3355,6 +3523,24 @@
    if (clientInfo.complement) elements.clientComplement.value = clientInfo.complement;
    if (clientInfo.reference) elements.clientReference.value = clientInfo.reference;
    if (clientInfo.notes) elements.orderNotes.value = clientInfo.notes;
+   
+   // Carrega informações de pagamento
+   if (clientInfo.paymentMethod) paymentMethod = clientInfo.paymentMethod;
+   if (clientInfo.trocoPara) {
+     trocoPara = clientInfo.trocoPara;
+     elements.trocoPara.value = trocoPara;
+   }
+   
+   // Seleciona a opção de pagamento correta
+   document.querySelectorAll('.payment-option').forEach(opt => {
+     opt.classList.remove('selected');
+     if (opt.getAttribute('data-method') === paymentMethod) {
+       opt.classList.add('selected');
+       if (paymentMethod === 'dinheiro') {
+         elements.trocoContainer.style.display = 'block';
+       }
+     }
+   });
  }
 
  function saveClientInfo() {
@@ -3373,7 +3559,9 @@
      address,
      complement: elements.clientComplement.value.trim(),
      reference: elements.clientReference.value.trim(),
-     notes: elements.orderNotes.value.trim()
+     notes: elements.orderNotes.value.trim(),
+     paymentMethod,
+     trocoPara
    };
    
    localStorage.setItem('varanda_client_info', JSON.stringify(clientInfo));
@@ -3403,6 +3591,13 @@
      return;
    }
    
+   // VALIDAÇÃO DE PAGAMENTO
+   if (paymentMethod === 'dinheiro' && !trocoPara) {
+     showToast('Informe para quanto precisa de troco!', 'error');
+     elements.trocoPara.focus();
+     return;
+   }
+   
    let message = `*NOVO PEDIDO - ${state.settings.name}*\n\n`;
    message += `*CLIENTE:* ${name}\n`;
    message += `*TELEFONE:* ${phone}\n`;
@@ -3428,6 +3623,24 @@
    });
    
    message += `\n*VALOR TOTAL:* ${formatCurrency(total)}\n`;
+   
+   // SEÇÃO DE PAGAMENTO - NOVA
+   message += `\n*FORMA DE PAGAMENTO:* `;
+   
+   if (paymentMethod === 'pix') {
+     message += `PIX (10% de desconto à vista)\n`;
+     message += `*Valor com desconto:* ${formatCurrency(total * 0.9)}\n`;
+   } 
+   else if (paymentMethod === 'dinheiro') {
+     message += `DINHEIRO\n`;
+     message += `*Troco para:* R$ ${trocoPara.replace('.', ',')}\n`;
+   }
+   else if (paymentMethod === 'cartao') {
+     message += `CARTÃO (débito/crédito)\n`;
+   }
+   else if (paymentMethod === 'custom') {
+     message += `${customPaymentText}\n`;
+   }
    
    const notes = elements.orderNotes.value.trim();
    if (notes) {
@@ -3791,4 +4004,3 @@
  </script>
 </body>
 </html>
-
